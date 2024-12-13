@@ -1,22 +1,25 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
+import { useDispatch } from "react-redux";
+import { getMyProfile } from "../redux/userSlice";
 
 const useGetProfile = (id) => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMyProfile = async () => {
       try {
         const res = await axios.get(`${USER_API_END_POINT}/profile/${id}`, {
           withCredentials: true,
         });
-        console.log("Profile Data:", res.data);
+        dispatch(getMyProfile(res.data.user));
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
     };
 
-    fetchData();
-  }, [id]);
+    fetchMyProfile();
+  });
 };
 
 export default useGetProfile;
